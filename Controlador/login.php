@@ -17,10 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['usuario_nombre'] = $usuario->nombre;
         $_SESSION['usuario_rol'] = $usuario->rol;
 
-        header("Location: ../vista/index.html");
+        header("Location: ../vista/index.php");
         exit();
     } else {
-        echo "Credenciales incorrectas. <a href='../vista/login.html'>Volver al login</a>";
+        echo "Credenciales incorrectas. <a href='../vista/login.php'>Volver al login</a>";
     }
 }
 ?>

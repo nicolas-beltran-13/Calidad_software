@@ -17,9 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contraseña = htmlspecialchars(strip_tags($_POST['password']));
 
     if($usuario->registrar($nombre, $NumeroIdentificacion, $direccion, $telefono, $rol, $gmail, $contraseña)) {
-        echo "Registro exitoso. <a href='../vista/login.html'>Iniciar sesión</a>";
+        echo "Registro exitoso. <a href='../vista/login.php'>Iniciar sesión</a>";
     } else {
-        echo "Error en el registro. <a href='../vista/registro.html'>Volver al registro</a>";
+        echo "Error en el registro. <a href='../vista/registro.php'>Volver al registro</a>";
     }
 }
 ?>

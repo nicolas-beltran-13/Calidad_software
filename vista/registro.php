@@ -1,0 +1,116 @@
+<?php
+require_once '../modelo/conexion.php';
+require_once '../modelo/Usuario.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $database = new Conexion();
+    $db = $database->getConexion();
+
+    $usuario = new Usuario($db);
+
+    $nombre = htmlspecialchars(strip_tags($_POST['nombre']));
+    $NumeroIdentificacion = htmlspecialchars(strip_tags($_POST['numero_identificacion']));
+    $direccion = htmlspecialchars(strip_tags($_POST['direccion']));
+    $telefono = htmlspecialchars(strip_tags($_POST['telefono']));
+    $rol = 'Cliente'; // Por defecto, los usuarios registrados son clientes
+    $gmail = htmlspecialchars(strip_tags($_POST['email']));
+    $contraseña = htmlspecialchars(strip_tags($_POST['password']));
+
+    if($usuario->registrar($nombre, $NumeroIdentificacion, $direccion, $telefono, $rol, $gmail, $contraseña)) {
+        $success = "Registro exitoso.";
+    } else {
+        $error = "Error en el registro.";
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Salsamentaria</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Barra de navegación (logo sin enlace, sin botones) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">
+                    <i class="fas fa-store"></i>
+                    Salsamentaria
+                </div>
+            </div>
+            <!-- nav-right eliminado intencionalmente -->
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h2><i class="fas fa-user-plus"></i> Crear Cuenta Nueva</h2>
+        <?php if (isset($success)): ?>
+            <div class="success-message" style="color: green; margin-bottom: 10px;">
+                <?php echo $success; ?> <a href="login.php">Iniciar sesión</a>
+            </div>
+        <?php elseif (isset($error)): ?>
+            <div class="error-message" style="color: red; margin-bottom: 10px;">
+                <?php echo $error; ?> <a href="registro.php">Volver al registro</a>
+            </div>
+        <?php endif; ?>
+        <form action="registro.php" method="POST">
+            <div class="form-group">
+                <label for="nombre"><i class="fas fa-user"></i> Nombre Completo:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+            </div>
+            <div class="form-group">
+                <label for="numero_identificacion"><i class="fas fa-id-card"></i> Número de Identificación:</label>
+                <input type="number" id="numero_identificacion" name="numero_identificacion" placeholder="Tu número de identificación" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion"><i class="fas fa-map-marker-alt"></i> Dirección:</label>
+                <input type="text" id="direccion" name="direccion" placeholder="Tu dirección" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono"><i class="fas fa-phone"></i> Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Tu teléfono" required>
+            </div>
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
+                <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Contraseña:</label>
+                <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password"><i class="fas fa-lock"></i> Confirmar Contraseña:</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Repite tu contraseña" required>
+            </div>
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-user-plus"></i> Registrarse
+            </button>
+        </form>
+        <p>¿Ya tienes una cuenta? <a href="login.php"><i class="fas fa-sign-in-alt"></i> Inicia sesión aquí</a></p>
+    </div>
+
+    <script>
+        // Validación básica de contraseñas
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Las contraseñas no coinciden. Por favor, verifica.');
+                return false;
+            }
+
+            if (password.length < 8) {
+                e.preventDefault();
+                alert('La contraseña debe tener al menos 8 caracteres.');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -35,12 +38,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 
-                <!-- Logo -->
+                <!-- Logo (sin enlace) -->
                 <div class="flex items-center">
-                    <a href="index.html" class="flex items-center space-x-2 text-primary font-bold text-xl">
+                    <div class="flex items-center space-x-2 text-primary font-bold text-xl">
                         <i class="fas fa-store text-2xl"></i>
                         <span>DondePepito</span>
-                    </a>
+                    </div>
                 </div>
 
                 <!-- Barra de búsqueda -->
@@ -56,9 +59,17 @@
 
                 <!-- Enlaces de navegación -->
                 <div class="flex items-center space-x-4">
-                    <a href="vista/login.html" class="text-secondary hover:text-primary transition-colors">
-                        <i class="fas fa-user text-xl"></i>
-                    </a>
+                    <?php if (isset($_SESSION['usuario_id'])): ?>
+                        <span class="text-secondary">Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario_nombre']); ?>!</span>
+                        <a href="../Controlador/logout.php" class="text-secondary hover:text-primary transition-colors">
+                            <i class="fas fa-sign-out-alt text-xl"></i> Cerrar Sesión
+                        </a>
+                    <?php else: ?>
+                        <a href="login.php" class="text-secondary hover:text-primary transition-colors flex items-center space-x-1">
+                            <i class="fas fa-user text-xl"></i>
+                            <span>Iniciar Sesión</span>
+                        </a>
+                    <?php endif; ?>
                     <a href="#" id="cart-btn-header" class="relative text-secondary hover:text-primary transition-colors">
                         <i class="fas fa-shopping-cart text-xl"></i>
                         <span id="cart-count" class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
