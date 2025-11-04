@@ -39,7 +39,7 @@ session_start();
             <div class="flex justify-between items-center h-16">
                 
                 <!-- Logo (sin enlace) -->
-                <div class="flex items-center">
+                <div class="w-1/4 flex justify-start">
                     <div class="flex items-center space-x-2 text-primary font-bold text-xl">
                         <i class="fas fa-store text-2xl"></i>
                         <span>DondePepito</span>
@@ -47,27 +47,29 @@ session_start();
                 </div>
 
                 <!-- Barra de búsqueda -->
-                <div class="hidden md:flex flex-1 max-w-md mx-8">
-                    <div class="relative w-full">
-                        <input type="text" placeholder="¿Qué estás buscando hoy?"
-                               class="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                        <button class="absolute right-2 top-2 bg-primary text-white p-2 rounded-full hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-search"></i>
-                        </button>
+                <div class="w-1/2 flex justify-center">
+                    <div class="w-full max-w-md">
+                        <form>
+                            <div class="relative">
+                                <input type="text" id="search" name="search" placeholder="¿Qué estás buscando hoy?"
+                                       class="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" autocomplete="off">
+                                <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-primary text-white p-2 rounded-full hover:bg-blue-700 transition-colors">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
                 <!-- Enlaces de navegación -->
-                <div class="flex items-center space-x-4">
+                <div class="w-1/4 flex justify-end items-center space-x-4">
                     <?php if (isset($_SESSION['usuario_id'])): ?>
-                        <span class="text-secondary">Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario_nombre']); ?>!</span>
                         <a href="../Controlador/logout.php" class="text-secondary hover:text-primary transition-colors">
-                            <i class="fas fa-sign-out-alt text-xl"></i> Cerrar Sesión
+                            <i class="fas fa-sign-out-alt text-xl"></i>
                         </a>
                     <?php else: ?>
-                        <a href="login.php" class="text-secondary hover:text-primary transition-colors flex items-center space-x-1">
+                        <a href="login.php" class="text-secondary hover:text-primary transition-colors">
                             <i class="fas fa-user text-xl"></i>
-                            <span>Iniciar Sesión</span>
                         </a>
                     <?php endif; ?>
                     <a href="#" id="cart-btn-header" class="relative text-secondary hover:text-primary transition-colors">
@@ -82,11 +84,11 @@ session_start();
     <!-- Menú secundario -->
     <nav class="bg-primary">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ul class="flex space-x-8 py-3">
-                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium">Ofertas del Día</a></li>
-                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium">Más Vendidos</a></li>
-                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium">Productos Frescos</a></li>
-                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium">Novedades</a></li>
+            <ul class="flex justify-center items-center space-x-12 py-3">
+                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-lg">Ofertas del Día</a></li>
+                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-lg">Más Vendidos</a></li>
+                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-lg">Productos Frescos</a></li>
+                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-lg">Novedades</a></li>
             </ul>
         </div>
     </nav>
@@ -194,7 +196,7 @@ session_start();
             </div>
         </div>
     </section>
-
+                        
     <!-- Productos destacados -->
     <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

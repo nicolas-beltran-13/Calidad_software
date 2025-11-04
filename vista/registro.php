@@ -14,12 +14,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefono = htmlspecialchars(strip_tags($_POST['telefono']));
     $rol = 'Cliente'; // Por defecto, los usuarios registrados son clientes
     $gmail = htmlspecialchars(strip_tags($_POST['email']));
-    $contraseña = htmlspecialchars(strip_tags($_POST['password']));
+    $contrasena = htmlspecialchars(strip_tags($_POST['password']));
 
-    if($usuario->registrar($nombre, $NumeroIdentificacion, $direccion, $telefono, $rol, $gmail, $contraseña)) {
-        $success = "Registro exitoso.";
-    } else {
-        $error = "Error en el registro.";
+    try {
+        if($usuario->registrar($nombre, $NumeroIdentificacion, $direccion, $telefono, $rol, $gmail, $contrasena)) {
+            // Redirigir directamente a login.php
+            header("Location: login.php");
+            exit();
+        }
+    } catch (PDOException $e) {
+        $error = "Error en el registro: " . $e->getMessage();
     }
 }
 ?>
@@ -60,31 +64,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="registro.php" method="POST">
             <div class="form-group">
                 <label for="nombre"><i class="fas fa-user"></i> Nombre Completo:</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" autocomplete="name" required>
             </div>
             <div class="form-group">
                 <label for="numero_identificacion"><i class="fas fa-id-card"></i> Número de Identificación:</label>
-                <input type="number" id="numero_identificacion" name="numero_identificacion" placeholder="Tu número de identificación" required>
+                <input type="number" id="numero_identificacion" name="numero_identificacion" placeholder="Tu número de identificación" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="direccion"><i class="fas fa-map-marker-alt"></i> Dirección:</label>
-                <input type="text" id="direccion" name="direccion" placeholder="Tu dirección" required>
+                <input type="text" id="direccion" name="direccion" placeholder="Tu dirección" autocomplete="address-line1" required>
             </div>
             <div class="form-group">
                 <label for="telefono"><i class="fas fa-phone"></i> Teléfono:</label>
-                <input type="tel" id="telefono" name="telefono" placeholder="Tu teléfono" required>
+                <input type="tel" id="telefono" name="telefono" placeholder="Tu teléfono" autocomplete="tel" required>
             </div>
             <div class="form-group">
                 <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
-                <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                <input type="email" id="email" name="email" placeholder="tu@email.com" autocomplete="email" required>
             </div>
             <div class="form-group">
                 <label for="password"><i class="fas fa-lock"></i> Contraseña:</label>
-                <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" required>
+                <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required>
             </div>
             <div class="form-group">
                 <label for="confirm-password"><i class="fas fa-lock"></i> Confirmar Contraseña:</label>
-                <input type="password" id="confirm-password" name="confirm-password" placeholder="Repite tu contraseña" required>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Repite tu contraseña" autocomplete="new-password" required>
             </div>
             <button type="submit" class="btn-primary">
                 <i class="fas fa-user-plus"></i> Registrarse

@@ -54,14 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php echo $error; ?>
             </div>
         <?php endif; ?>
-        <form action="login.php" method="POST">
+        <form action="../Controlador/login.php" method="POST">
             <div class="form-group">
                 <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
-                <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                <input type="email" id="email" name="email" placeholder="tu@email.com" autocomplete="email" required>
             </div>
             <div class="form-group">
                 <label for="password"><i class="fas fa-lock"></i> Contraseña:</label>
-                <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+                <input type="password" id="password" name="password" placeholder="Tu contraseña" autocomplete="current-password" required>
             </div>
             <button type="submit" class="btn-primary">
                 <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
