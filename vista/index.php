@@ -17,10 +17,13 @@ session_start();
             theme: {
                 extend: {
                     colors: {
-                        primary: '#78abef',
-                        secondary: '#1f2937', 
-                        accent: '#f59e0b', 
-                        background: '#f9fafb', 
+                        primary: '#8B1F1F', // Rojo guinda principal
+                        secondary: '#5C1414', // Rojo guinda oscuro
+                        accent: '#D4AF37', // Dorado elegante
+                        background: '#F9F9F9', // Fondo claro
+                        surface: '#FFFFFF', // Superficie blanca
+                        cafe: '#8B4513', // Café para acentos
+                        'cafe-light': '#A0522D', // Café claro
                     },
                     fontFamily: {
                         'poppins': ['Poppins', 'sans-serif'],
@@ -36,10 +39,9 @@ session_start();
     <!-- Barra de navegación principal -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                
-                <!-- Logo (sin enlace) -->
-                <div class="w-1/4 flex justify-start">
+            <div class="flex flex-col md:flex-row justify-between items-center h-auto md:h-16 py-4 md:py-0">
+                <!-- Logo -->
+                <div class="flex justify-center md:justify-start mb-4 md:mb-0">
                     <div class="flex items-center space-x-2 text-primary font-bold text-xl">
                         <i class="fas fa-store text-2xl"></i>
                         <span>DondePepito</span>
@@ -47,7 +49,7 @@ session_start();
                 </div>
 
                 <!-- Barra de búsqueda -->
-                <div class="w-1/2 flex justify-center">
+                <div class="w-full md:w-1/2 flex justify-center mb-4 md:mb-0">
                     <div class="w-full max-w-md">
                         <form>
                             <div class="relative">
@@ -62,7 +64,7 @@ session_start();
                 </div>
 
                 <!-- Enlaces de navegación -->
-                <div class="w-1/4 flex justify-end items-center space-x-4">
+                <div class="flex justify-center md:justify-end items-center space-x-4">
                     <?php if (isset($_SESSION['usuario_id'])): ?>
                         <a href="../Controlador/logout.php" class="text-secondary hover:text-primary transition-colors">
                             <i class="fas fa-sign-out-alt text-xl"></i>
@@ -84,36 +86,36 @@ session_start();
     <!-- Menú secundario -->
     <nav class="bg-primary">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ul class="flex justify-center items-center space-x-12 py-3">
-                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-lg">Ofertas del Día</a></li>
-                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-lg">Más Vendidos</a></li>
-                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-lg">Productos Frescos</a></li>
-                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-lg">Novedades</a></li>
+            <ul class="flex flex-wrap justify-center items-center space-x-4 md:space-x-12 py-3">
+                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-sm md:text-lg">Ofertas del Día</a></li>
+                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-sm md:text-lg">Más Vendidos</a></li>
+                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-sm md:text-lg">Productos Frescos</a></li>
+                <li><a href="#" class="text-white hover:text-accent transition-colors font-medium text-sm md:text-lg">Novedades</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Banner principal -->
-    <section class="bg-gradient-to-br from-primary via-blue-600 to-blue-800 text-white py-20">
+    <section class="bg-gradient-to-br from-primary via-cafe to-secondary text-white py-12 md:py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4 text-shadow-lg">¡Bienvenidos a DondePepito!</h1>
-            <p class="text-xl md:text-2xl mb-8 opacity-90">Tu tienda de confianza para productos frescos y de calidad</p>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 text-shadow-lg">¡Bienvenidos a DondePepito!</h1>
+            <p class="text-lg md:text-xl lg:text-2xl mb-8 opacity-90">Tu tienda de confianza para productos frescos y de calidad</p>
 
             <!-- Temporizador -->
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 inline-block">
-                <h2 class="text-2xl font-semibold mb-6">La Promo Termina en:</h2>
-                <div class="flex space-x-4 justify-center" id="countdown">
-                    <div class="bg-white/20 rounded-lg p-4 min-w-[80px]">
-                        <div class="text-3xl font-bold hours">24</div>
-                        <div class="text-sm opacity-80">Horas</div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 inline-block border border-accent/30">
+                <h2 class="text-xl md:text-2xl font-semibold mb-6 text-accent">La Promo Termina en:</h2>
+                <div class="flex flex-wrap justify-center space-x-2 md:space-x-4" id="countdown">
+                    <div class="bg-accent/20 rounded-lg p-3 md:p-4 min-w-[70px] md:min-w-[80px] mb-2 md:mb-0 border border-accent/30">
+                        <div class="text-2xl md:text-3xl font-bold hours text-accent">24</div>
+                        <div class="text-xs md:text-sm opacity-80">Horas</div>
                     </div>
-                    <div class="bg-white/20 rounded-lg p-4 min-w-[80px]">
-                        <div class="text-3xl font-bold minutes">00</div>
-                        <div class="text-sm opacity-80">Minutos</div>
+                    <div class="bg-accent/20 rounded-lg p-3 md:p-4 min-w-[70px] md:min-w-[80px] mb-2 md:mb-0 border border-accent/30">
+                        <div class="text-2xl md:text-3xl font-bold minutes text-accent">00</div>
+                        <div class="text-xs md:text-sm opacity-80">Minutos</div>
                     </div>
-                    <div class="bg-white/20 rounded-lg p-4 min-w-[80px]">
-                        <div class="text-3xl font-bold seconds">00</div>
-                        <div class="text-sm opacity-80">Segundos</div>
+                    <div class="bg-accent/20 rounded-lg p-3 md:p-4 min-w-[70px] md:min-w-[80px] mb-2 md:mb-0 border border-accent/30">
+                        <div class="text-2xl md:text-3xl font-bold seconds text-accent">00</div>
+                        <div class="text-xs md:text-sm opacity-80">Segundos</div>
                     </div>
                 </div>
             </div>
@@ -142,24 +144,24 @@ session_start();
     </div>
 
     <!-- Cupones de descuento -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-surface">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold text-center text-secondary mb-12">¡Cupones de Descuento!</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-primary rounded-2xl p-8 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-gradient-to-br from-cafe/10 to-accent/10 border-2 border-primary rounded-2xl p-8 text-center hover:shadow-xl transition-shadow">
                     <div class="text-4xl font-bold text-primary mb-2">-$50.000</div>
                     <div class="text-secondary mb-4">sobre +$300.000</div>
-                    <div class="bg-primary text-white px-4 py-2 rounded-full inline-block font-semibold">Código: SAL50</div>
+                    <div class="bg-gradient-to-r from-primary to-cafe text-white px-4 py-2 rounded-full inline-block font-semibold">Código: SAL50</div>
                 </div>
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-primary rounded-2xl p-8 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-gradient-to-br from-cafe/10 to-accent/10 border-2 border-primary rounded-2xl p-8 text-center hover:shadow-xl transition-shadow">
                     <div class="text-4xl font-bold text-primary mb-2">-$30.000</div>
                     <div class="text-secondary mb-4">sobre +$200.000</div>
-                    <div class="bg-primary text-white px-4 py-2 rounded-full inline-block font-semibold">Código: SAL30</div>
+                    <div class="bg-gradient-to-r from-primary to-cafe text-white px-4 py-2 rounded-full inline-block font-semibold">Código: SAL30</div>
                 </div>
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-primary rounded-2xl p-8 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-gradient-to-br from-cafe/10 to-accent/10 border-2 border-primary rounded-2xl p-8 text-center hover:shadow-xl transition-shadow">
                     <div class="text-4xl font-bold text-primary mb-2">-$15.000</div>
                     <div class="text-secondary mb-4">sobre +$100.000</div>
-                    <div class="bg-primary text-white px-4 py-2 rounded-full inline-block font-semibold">Código: SAL15</div>
+                    <div class="bg-gradient-to-r from-primary to-cafe text-white px-4 py-2 rounded-full inline-block font-semibold">Código: SAL15</div>
                 </div>
             </div>
         </div>
@@ -200,338 +202,9 @@ session_start();
     <!-- Productos destacados -->
     <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-secondary mb-12">Ofertas Destacadas</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- 1 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/salchicha-perro-caliente.svg" alt="Salchicha Perro Caliente" class="w-full h-56 object-cover">
-                        <div class="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded-full font-bold">Oferta</div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Salchicha Perro Caliente</h3>
-                        <div class="text-primary font-semibold mb-2">$5.000</div>
-                        <p class="text-sm text-gray-600">Salchicha americana para hot dogs, paquete 500g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="1" data-name="Salchicha Perro Caliente" data-price="5000">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/jamon-cerdo-ahumado.svg" alt="Jamón de Cerdo Ahumado" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Jamón de Cerdo Ahumado</h3>
-                        <div class="text-primary font-semibold mb-2">$35.000</div>
-                        <p class="text-sm text-gray-600">Jamón de pernil de cerdo ahumado, 250g tajado.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="2" data-name="Jamón de Cerdo Ahumado" data-price="35000">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/mortadela-pollo.svg" alt="Mortadela de Pollo" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Mortadela de Pollo</h3>
-                        <div class="text-primary font-semibold mb-2">$6.800</div>
-                        <p class="text-sm text-gray-600">Mortadela de pollo, presentación 500g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="3" data-name="Mortadela de Pollo" data-price="6800">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/chorizo-parrillero.svg" alt="Chorizo Parrillero" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Chorizo Parrillero</h3>
-                        <div class="text-primary font-semibold mb-2">$45.000</div>
-                        <p class="text-sm text-gray-600">Chorizo de cerdo para asar, pack 6 unidades.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="4" data-name="Chorizo Parrillero" data-price="45000">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/salami-genova.svg" alt="Salami Tipo Génova" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Salami Tipo Génova</h3>
-                        <div class="text-primary font-semibold mb-2">$20.000</div>
-                        <p class="text-sm text-gray-600">Salami curado, 150g empacado al vacío.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="5" data-name="Salami Tipo Génova" data-price="20000">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/queso-doble-crema.svg" alt="Queso Doble Crema" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Queso Doble Crema</h3>
-                        <div class="text-primary font-semibold mb-2">$55.000</div>
-                        <p class="text-sm text-gray-600">Queso fresco, suave, 250g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="6" data-name="Queso Doble Crema" data-price="55000">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 7 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/queso-mozzarella-bloque.svg" alt="Queso Mozzarella Bloque" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Queso Mozzarella Bloque</h3>
-                        <div class="text-primary font-semibold mb-2">$40.000</div>
-                        <p class="text-sm text-gray-600">Queso semi-duro para gratinar, 500g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="7" data-name="Queso Mozzarella Bloque" data-price="40000">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 8 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/queso-parmesano-rallado.svg" alt="Queso Parmesano Rallado" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Queso Parmesano Rallado</h3>
-                        <div class="text-primary font-semibold mb-2">$8.900</div>
-                        <p class="text-sm text-gray-600">Queso maduro rallado, 100g bolsa.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="8" data-name="Queso Parmesano Rallado" data-price="8900">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 9 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/mantequilla-sin-sal.svg" alt="Mantequilla sin Sal" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Mantequilla sin Sal</h3>
-                        <div class="text-primary font-semibold mb-2">$7.500</div>
-                        <p class="text-sm text-gray-600">Mantequilla fresca sin sal, 250g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="9" data-name="Mantequilla sin Sal" data-price="7500">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 10 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/yogurt-natural-entero.svg" alt="Yogurt Natural Entero" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Yogurt Natural Entero</h3>
-                        <div class="text-primary font-semibold mb-2">$4.200</div>
-                        <p class="text-sm text-gray-600">Yogurt sin azúcar, presentación 1L.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="10" data-name="Yogurt Natural Entero" data-price="4200">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 11 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/ketchup.svg" alt="Salsa de Tomate Ketchup" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Salsa de Tomate Ketchup</h3>
-                        <div class="text-primary font-semibold mb-2">$5.100</div>
-                        <p class="text-sm text-gray-600">Salsa de tomate clásica, botella 400g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="11" data-name="Salsa de Tomate Ketchup" data-price="5100">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 12 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/mayonesa.svg" alt="Mayonesa Clásica" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Mayonesa Clásica</h3>
-                        <div class="text-primary font-semibold mb-2">$6.900</div>
-                        <p class="text-sm text-gray-600">Aderezo a base de huevo y aceite, 500g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="12" data-name="Mayonesa Clásica" data-price="6900">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 13 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/mostaza-americana.svg" alt="Mostaza Americana" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Mostaza Americana</h3>
-                        <div class="text-primary font-semibold mb-2">$4.800</div>
-                        <p class="text-sm text-gray-600">Mostaza suave, frasco 250g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="13" data-name="Mostaza Americana" data-price="4800">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 14 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/salsa-bbq.svg" alt="Salsa BBQ Ahumada" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Salsa BBQ Ahumada</h3>
-                        <div class="text-primary font-semibold mb-2">$9.500</div>
-                        <p class="text-sm text-gray-600">Salsa para carnes a la parrilla, 370g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="14" data-name="Salsa BBQ Ahumada" data-price="9500">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 15 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/aderezo-ranch.svg" alt="Aderezo Ranch" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Aderezo Ranch</h3>
-                        <div class="text-primary font-semibold mb-2">$7.200</div>
-                        <p class="text-sm text-gray-600">Aderezo cremoso para ensaladas, 300g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="15" data-name="Aderezo Ranch" data-price="7200">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 16 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/harina-trigo.svg" alt="Harina de Trigo" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Harina de Trigo Todo Uso</h3>
-                        <div class="text-primary font-semibold mb-2">$3.500</div>
-                        <p class="text-sm text-gray-600">Harina para múltiples preparaciones, 1000g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="16" data-name="Harina de Trigo Todo Uso" data-price="3500">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 17 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/polvo-hornear.svg" alt="Polvo de Hornear" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Polvo de Hornear</h3>
-                        <div class="text-primary font-semibold mb-2">$2.100</div>
-                        <p class="text-sm text-gray-600">Leudante químico para repostería, 100g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="17" data-name="Polvo de Hornear" data-price="2100">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 18 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/azucar-impalpable.svg" alt="Azúcar Impalpable" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Azúcar Impalpable</h3>
-                        <div class="text-primary font-semibold mb-2">$4.500</div>
-                        <p class="text-sm text-gray-600">Azúcar muy fina para decoración, 200g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="18" data-name="Azúcar Impalpable" data-price="4500">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 19 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/levadura-fresca.svg" alt="Levadura Fresca" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Levadura Fresca</h3>
-                        <div class="text-primary font-semibold mb-2">$1.500</div>
-                        <p class="text-sm text-gray-600">Levadura para panificación, sobre 50g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="19" data-name="Levadura Fresca" data-price="1500">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 20 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/esencia-vainilla.svg" alt="Esencia de Vainilla" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Esencia de Vainilla</h3>
-                        <div class="text-primary font-semibold mb-2">$3.800</div>
-                        <p class="text-sm text-gray-600">Saborizante líquido, presentación 120ml.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="20" data-name="Esencia de Vainilla" data-price="3800">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 21 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/frijoles-rojos-secos.svg" alt="Frijoles Rojos Secos" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Frijoles Rojos Secos</h3>
-                        <div class="text-primary font-semibold mb-2">$5.500</div>
-                        <p class="text-sm text-gray-600">Frijoles para cocción, paquete 500g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="21" data-name="Frijoles Rojos Secos" data-price="5500">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 22 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img src="img/lentejas-secas.svg" alt="Lentejas Secas" class="w-full h-56 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-secondary mb-2">Lentejas Secas</h3>
-                        <div class="text-primary font-semibold mb-2">$4.900</div>
-                        <p class="text-sm text-gray-600">Lentejas para guisos, paquete 500g.</p>
-                        <div class="mt-4">
-                            <button class="add-to-cart px-4 py-2 bg-primary text-white rounded-lg" data-id="22" data-name="Lentejas Secas" data-price="4900">Agregar al carrito</button>
-                        </div>
-                    </div>
-                </div>
+            <h2 class="text-3xl font-bold text-center text-secondary mb-12">Productos Disponibles</h2>
+            <div id="productos-destacados" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Los productos se cargarán dinámicamente aquí -->
             </div>
         </div>
     </section>
@@ -579,25 +252,222 @@ session_start();
 
     <!-- Scripts -->
     <script>
+        // Carrito de compras
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Función para actualizar contador del carrito
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = count;
+        }
+
+        // Función para agregar al carrito
+        function addToCart(productId, productName, productPrice) {
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showNotification(`${productName} agregado al carrito`);
+        }
+
+        // Función para mostrar notificación
+        function showNotification(message) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Función para cargar productos
+        async function cargarProductos() {
+            try {
+                const response = await fetch('../Controlador/productos-publicos.php');
+                const productos = await response.json();
+                mostrarProductos(productos);
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+            }
+        }
+
+        // Función para mostrar productos
+        function mostrarProductos(productos) {
+            const contenedor = document.getElementById('productos-destacados');
+            contenedor.innerHTML = '';
+
+            if (productos.length === 0) {
+                contenedor.innerHTML = '<p class="text-gray-500 text-center col-span-full">No hay productos disponibles.</p>';
+                return;
+            }
+
+            productos.forEach(producto => {
+                const productoDiv = document.createElement('div');
+                productoDiv.className = 'bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow';
+
+                const imagenSrc = producto.foto ? `data:image/jpeg;base64,${producto.foto}` : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
+
+                productoDiv.innerHTML = `
+                    <div class="relative">
+                        <img src="${imagenSrc}" alt="${producto.nombreProducto}" class="w-full h-56 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg text-secondary mb-2">${producto.nombreProducto}</h3>
+                        <p class="text-sm text-gray-600 mb-2">${producto.Descripcion}</p>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-primary font-semibold">$${producto.Precio.toLocaleString()}</span>
+                            <span class="text-sm text-gray-500">${producto.nombreTipo}</span>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-4">
+                            <p>Stock: ${producto.cantidad}</p>
+                        </div>
+                        <div class="mt-4">
+                            <button class="add-to-cart-btn w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors" data-id="${producto.id_producto}" data-name="${producto.nombreProducto}" data-price="${producto.Precio}">Agregar al carrito</button>
+                        </div>
+                    </div>
+                `;
+
+                contenedor.appendChild(productoDiv);
+            });
+
+            // Agregar event listeners a los botones
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    const name = this.dataset.name;
+                    const price = parseFloat(this.dataset.price);
+                    addToCart(id, name, price);
+                });
+            });
+        }
+
+        // Modal del carrito
+        const cartModal = document.getElementById('cart-modal');
+        const cartBtn = document.getElementById('cart-btn-header');
+        const closeCartBtns = document.querySelectorAll('.close-cart');
+
+        cartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showCartModal();
+        });
+
+        closeCartBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                cartModal.classList.add('hidden');
+            });
+        });
+
+        function showCartModal() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-500 text-center">Tu carrito está vacío</p>';
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'flex justify-between items-center border-b pb-2';
+                    itemDiv.innerHTML = `
+                        <div>
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-sm text-gray-600">$${item.price.toLocaleString()} x ${item.quantity}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="update-quantity px-2 py-1 bg-gray-200 rounded" data-id="${item.id}" data-change="-1">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="update-quantity px-2 py-1 bg-gray-200 rounded" data-id="${item.id}" data-change="1">+</button>
+                            <button class="remove-item px-2 py-1 bg-red-500 text-white rounded ml-2" data-id="${item.id}">×</button>
+                        </div>
+                    `;
+                    cartItems.appendChild(itemDiv);
+                });
+            }
+
+            cartTotal.textContent = `Total: $${total.toLocaleString()}`;
+            cartModal.classList.remove('hidden');
+
+            // Event listeners para actualizar cantidad
+            document.querySelectorAll('.update-quantity').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    const change = parseInt(this.dataset.change);
+                    updateCartQuantity(id, change);
+                });
+            });
+
+            // Event listeners para remover items
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    removeFromCart(id);
+                });
+            });
+        }
+
+        function updateCartQuantity(id, change) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(id);
+                } else {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                    showCartModal();
+                }
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showCartModal();
+        }
+
         // Contador regresivo
         function updateCountdown() {
             const now = new Date();
             const end = new Date();
-            end.setHours(10,23, 59, 59);
-            
+            end.setHours(30, 23, 59, 59);
+
             const diff = end - now;
-            
+
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
+
             document.querySelector('.hours').textContent = hours.toString().padStart(2, '0');
             document.querySelector('.minutes').textContent = minutes.toString().padStart(2, '0');
             document.querySelector('.seconds').textContent = seconds.toString().padStart(2, '0');
         }
 
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            cargarProductos();
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        });
     </script>
 </body>
 </html>

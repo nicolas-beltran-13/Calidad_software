@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn = $db->getConexion();
 
     try {
-        // Preparar los datos
+        $id_producto = $_POST['id_producto'];
         $nombreProducto = $_POST['nombreProducto'];
         $precio = $_POST['Precio'];
         $descripcion = $_POST['Descripcion'];
@@ -20,36 +20,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_tipo_producto = $_POST['id_tipo_producto'];
         $valordeStock = $_POST['valordeStock'];
 
-        // Manejar la imagen
+        // Verificar si se actualiza la imagen
+        $updateFoto = false;
         if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
             $foto = file_get_contents($_FILES['foto']['tmp_name']);
-        } else {
-            throw new Exception('Error al cargar la imagen');
+            $updateFoto = true;
         }
 
-        // Insertar en la base de datos
-        $query = "INSERT INTO producto (nombreProducto, Precio, Descripcion, foto, cantidad, id_tipo_producto, valordeStock) 
-                 VALUES (:nombreProducto, :precio, :descripcion, :foto, :cantidad, :id_tipo_producto, :valordeStock)";
-        
-        $stmt = $conn->prepare($query);
+        // Actualizar el producto
+        if ($updateFoto) {
+            $query = "UPDATE producto SET nombreProducto = :nombreProducto, Precio = :precio, Descripcion = :descripcion, foto = :foto, cantidad = :cantidad, id_tipo_producto = :id_tipo_producto, valordeStock = :valordeStock WHERE id_producto = :id_producto";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':foto', $foto, PDO::PARAM_LOB);
+        } else {
+            $query = "UPDATE producto SET nombreProducto = :nombreProducto, Precio = :precio, Descripcion = :descripcion, cantidad = :cantidad, id_tipo_producto = :id_tipo_producto, valordeStock = :valordeStock WHERE id_producto = :id_producto";
+            $stmt = $conn->prepare($query);
+        }
+
+        $stmt->bindParam(':id_producto', $id_producto);
         $stmt->bindParam(':nombreProducto', $nombreProducto);
         $stmt->bindParam(':precio', $precio);
         $stmt->bindParam(':descripcion', $descripcion);
-        $stmt->bindParam(':foto', $foto, PDO::PARAM_LOB);
         $stmt->bindParam(':cantidad', $cantidad);
         $stmt->bindParam(':id_tipo_producto', $id_tipo_producto);
         $stmt->bindParam(':valordeStock', $valordeStock);
 
         if ($stmt->execute()) {
-            $_SESSION['mensaje'] = "Producto agregado exitosamente";
-            header('Location: ../vista/admin-dashboard.php');
-            exit();
+            $_SESSION['mensaje'] = "Producto actualizado exitosamente";
         } else {
-            throw new Exception('Error al guardar el producto');
+            throw new Exception('Error al actualizar el producto');
         }
     } catch (Exception $e) {
         $_SESSION['error'] = "Error: " . $e->getMessage();
-        header('Location: ../vista/admin-dashboard.php');
     }
 }
+
+header('Location: ../vista/admin-dashboard.php');
+exit();
 ?>

@@ -29,7 +29,6 @@ class Usuario {
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    // Log the fetched row for debugging (no output to browser)
     error_log('[Usuario::login] fetched row: ' . var_export($row, true));
 
         if($row) {

@@ -5,6 +5,13 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     header('Location: login.php');
     exit();
 }
+
+if (!isset($_GET['id'])) {
+    header('Location: admin-dashboard.php');
+    exit();
+}
+
+$id_producto = $_GET['id'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -12,7 +19,7 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - DondePepito</title>
+    <title>Editar Producto - DondePepito</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
@@ -44,7 +51,7 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
         <nav class="p-4">
             <ul class="space-y-2">
                 <li>
-                    <a href="dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary transition-colors">
+                    <a href="admin-dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary transition-colors">
                         <i class="fas fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
@@ -68,7 +75,7 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
                     </a>
                 </li>
                 <li>
-                    <a href="reportes.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary transition-colors">
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary transition-colors">
                         <i class="fas fa-chart-bar"></i>
                         <span>Reportes</span>
                     </a>
@@ -86,33 +93,6 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     <!-- Overlay para móvil -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" onclick="toggleSidebar()"></div>
 
-    <!-- Modal de confirmación de eliminación -->
-    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <div class="flex items-center mb-4">
-                <div class="flex-shrink-0">
-                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
-                </div>
-                <div class="ml-3">
-                    <h3 class="text-lg font-medium text-gray-900">Confirmar Eliminación</h3>
-                </div>
-            </div>
-            <div class="mb-6">
-                <p class="text-sm text-gray-500" id="delete-message">
-                    ¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.
-                </p>
-            </div>
-            <div class="flex justify-end space-x-3">
-                <button id="cancel-delete" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                    Cancelar
-                </button>
-                <button id="confirm-delete" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                    Eliminar
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Contenido principal -->
     <div class="md:ml-64 p-4 md:p-8">
         <!-- Header -->
@@ -121,8 +101,11 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
                 <button id="menu-btn" class="md:hidden bg-primary text-white p-2 rounded-lg hover:bg-secondary transition-colors" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h1 class="text-xl md:text-2xl font-bold text-gray-800">Gestión de Productos</h1>
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800">Editar Producto</h1>
             </div>
+            <a href="admin-dashboard.php" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
         </div>
 
         <!-- Mensajes de éxito/error -->
@@ -140,28 +123,22 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
 
-        <!-- Lista de productos -->
-        <div class="bg-surface p-6 rounded-lg shadow-lg mb-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-6">Productos Registrados</h2>
-            <div id="productos-lista" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Los productos se cargarán aquí dinámicamente -->
-            </div>
-        </div>
-
-        <!-- Formulario de producto -->
+        <!-- Formulario de edición -->
         <div class="bg-surface p-8 rounded-xl shadow-xl border border-gray-100">
             <div class="flex items-center mb-8">
                 <div class="bg-primary rounded-full p-3 mr-4">
-                    <i class="fas fa-plus text-white text-xl"></i>
+                    <i class="fas fa-edit text-white text-xl"></i>
                 </div>
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Agregar Nuevo Producto</h2>
-                    <p class="text-gray-600">Complete todos los campos para registrar un nuevo producto</p>
+                    <h2 class="text-2xl font-bold text-gray-800">Editar Producto</h2>
+                    <p class="text-gray-600">Modifica los datos del producto seleccionado</p>
                 </div>
             </div>
 
-            <form action="../Controlador/agregar-producto.php" method="POST" enctype="multipart/form-data"
+            <form action="../Controlador/actualizar-producto.php" method="POST" enctype="multipart/form-data"
                 class="space-y-8">
+                <input type="hidden" id="id_producto" name="id_producto" value="<?php echo $id_producto; ?>">
+
                 <!-- Información Básica -->
                 <div class="bg-gray-50 p-6 rounded-lg">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
@@ -257,19 +234,26 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
 
                         <div>
                             <label class="block text-gray-700 font-medium mb-2" for="foto">
-                                <i class="fas fa-camera text-primary mr-1"></i>Imagen del Producto *
+                                <i class="fas fa-camera text-primary mr-1"></i>Imagen del Producto
                             </label>
                             <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
-                                <input type="file" id="foto" name="foto" accept="image/*" required
+                                <input type="file" id="foto" name="foto" accept="image/*"
                                     class="hidden" onchange="previewImage(this)">
                                 <label for="foto" class="cursor-pointer">
                                     <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                                    <p class="text-gray-600">Haz clic para seleccionar una imagen</p>
+                                    <p class="text-gray-600">Haz clic para cambiar la imagen</p>
                                     <p class="text-sm text-gray-500">PNG, JPG hasta 5MB</p>
                                 </label>
                             </div>
                             <div id="image-preview" class="mt-4 hidden">
                                 <img id="preview-img" src="" alt="Vista previa" class="w-full h-32 object-cover rounded-lg border">
+                            </div>
+                            <div id="imagen-actual" class="mt-4">
+                                <label class="block text-gray-700 font-medium mb-2">
+                                    Imagen Actual
+                                </label>
+                                <img id="imagen-preview-actual" src="" alt="Imagen actual" class="w-32 h-32 object-cover border rounded-lg">
+                                <p class="text-sm text-gray-500 mt-1">Deja vacío para mantener la imagen actual</p>
                             </div>
                         </div>
                     </div>
@@ -277,13 +261,13 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
 
                 <!-- Botones de acción -->
                 <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200">
-                    <button type="reset"
+                    <a href="admin-dashboard.php"
                         class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all font-medium">
-                        <i class="fas fa-eraser mr-2"></i>Limpiar Formulario
-                    </button>
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </a>
                     <button type="submit"
                         class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-secondary transition-all font-medium shadow-lg hover:shadow-xl">
-                        <i class="fas fa-save mr-2"></i>Guardar Producto
+                        <i class="fas fa-save mr-2"></i>Actualizar Producto
                     </button>
                 </div>
             </form>
@@ -291,105 +275,34 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     </div>
 
     <script>
-    // Función para cargar productos
-    async function cargarProductos() {
+    // Función para cargar datos del producto
+    async function cargarProducto() {
         try {
-            const response = await fetch('../Controlador/listar-productos.php');
-            const productos = await response.json();
-            mostrarProductos(productos);
+            const response = await fetch(`../Controlador/obtener-producto.php?id=<?php echo $id_producto; ?>`);
+            const producto = await response.json();
+
+            if (producto.error) {
+                alert('Error: ' + producto.error);
+                window.location.href = 'admin-dashboard.php';
+                return;
+            }
+
+            // Llenar el formulario con los datos del producto
+            document.getElementById('nombreProducto').value = producto.nombreProducto;
+            document.getElementById('Precio').value = producto.Precio;
+            document.getElementById('cantidad').value = producto.cantidad;
+            document.getElementById('valordeStock').value = producto.valordeStock;
+            document.getElementById('id_tipo_producto').value = producto.id_tipo_producto;
+            document.getElementById('Descripcion').value = producto.Descripcion;
+
+            // Mostrar imagen actual si existe
+            if (producto.foto) {
+                document.getElementById('imagen-preview-actual').src = `data:image/jpeg;base64,${producto.foto}`;
+            }
         } catch (error) {
-            console.error('Error al cargar productos:', error);
+            console.error('Error al cargar producto:', error);
+            alert('Error al cargar los datos del producto');
         }
-    }
-
-    // Función para mostrar productos
-    function mostrarProductos(productos) {
-        const contenedor = document.getElementById('productos-lista');
-        contenedor.innerHTML = '';
-
-        if (productos.length === 0) {
-            contenedor.innerHTML = '<p class="text-gray-500 text-center col-span-full">No hay productos registrados.</p>';
-            return;
-        }
-
-        productos.forEach(producto => {
-            const productoDiv = document.createElement('div');
-            productoDiv.className = 'bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow';
-
-            const imagenSrc = producto.foto ? `data:image/jpeg;base64,${producto.foto}` : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
-
-            productoDiv.innerHTML = `
-                <div class="relative">
-                    <img src="${imagenSrc}" alt="${producto.nombreProducto}" class="w-full h-48 object-cover">
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-lg text-gray-800 mb-2">${producto.nombreProducto}</h3>
-                    <p class="text-sm text-gray-600 mb-2">${producto.Descripcion}</p>
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-primary font-semibold">$${producto.Precio.toLocaleString()}</span>
-                        <span class="text-sm text-gray-500">${producto.nombreTipo}</span>
-                    </div>
-                    <div class="text-sm text-gray-600 mb-4">
-                        <p>Stock: ${producto.cantidad}</p>
-                        <p>Stock Mínimo: ${producto.valordeStock}</p>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="flex-1 bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm" onclick="editarProducto(${producto.id_producto})">
-                            <i class="fas fa-edit"></i> Editar
-                        </button>
-                        <button class="flex-1 bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm" onclick="eliminarProducto(${producto.id_producto})">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            contenedor.appendChild(productoDiv);
-        });
-    }
-
-    // Función para editar producto
-    function editarProducto(id) {
-        // Obtener datos del producto (necesitaríamos una función para obtener un producto específico)
-        // Por simplicidad, abriremos un modal o redirigiremos a una página de edición
-        window.location.href = `editar-producto.php?id=${id}`;
-    }
-
-    // Variable global para almacenar el ID del producto a eliminar
-    let productoAEliminar = null;
-
-    // Función para eliminar producto
-    function eliminarProducto(id) {
-        productoAEliminar = id;
-        const modal = document.getElementById('delete-modal');
-        const message = document.getElementById('delete-message');
-        message.textContent = '¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.';
-        modal.classList.remove('hidden');
-    }
-
-    // Función para confirmar eliminación
-    function confirmarEliminacion() {
-        if (productoAEliminar) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '../Controlador/eliminar-producto.php';
-
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'id_producto';
-            input.value = productoAEliminar;
-
-            form.appendChild(input);
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-    // Función para cancelar eliminación
-    function cancelarEliminacion() {
-        const modal = document.getElementById('delete-modal');
-        modal.classList.add('hidden');
-        productoAEliminar = null;
     }
 
     // Función para mostrar preview de imagen
@@ -424,19 +337,8 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
         }
     }
 
-    // Event listeners para el modal
-    document.getElementById('cancel-delete').addEventListener('click', cancelarEliminacion);
-    document.getElementById('confirm-delete').addEventListener('click', confirmarEliminacion);
-
-    // Cerrar modal al hacer clic fuera
-    document.getElementById('delete-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            cancelarEliminacion();
-        }
-    });
-
-    // Cargar productos al cargar la página
-    document.addEventListener('DOMContentLoaded', cargarProductos);
+    // Cargar datos del producto al cargar la página
+    document.addEventListener('DOMContentLoaded', cargarProducto);
     </script>
 </body>
 
