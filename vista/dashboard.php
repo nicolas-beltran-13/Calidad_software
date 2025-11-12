@@ -1,10 +1,6 @@
 <?php
-session_start();
-// Verificar si el usuario es administrador
-if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolower(trim($_SESSION['usuario_rol'] ?? '')) !== 'admin')) {
-    header('Location: login.php');
-    exit();
-}
+// Incluye verificación centralizada de sesión y rol admin
+include_once '../Controlador/verificar_admin.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,7 +9,8 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - DondePepito</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+     <script src="https://cdn.tailwindcss.com" ></script>
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
     tailwind.config = {
@@ -84,8 +81,14 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     </div>
 
     <!-- Overlay para móvil -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" onclick="toggleSidebar()"></div>
-
+   <div id="sidebar-overlay" 
+     class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" 
+     onclick="toggleSidebar()" 
+     role="button" 
+     tabindex="0" 
+     aria-label="Cerrar barra lateral" 
+     onkeydown="if(event.key === 'Enter' || event.key === ' ') toggleSidebar()">
+</div>
     <!-- Contenido principal -->
     <div class="md:ml-64 p-4 md:p-8">
         <!-- Header -->
@@ -249,32 +252,8 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
         </div>
     </div>
 
+    <script src="js/estadisticas.js"></script>
     <script>
-    // Función para cargar estadísticas
-    async function cargarEstadisticas() {
-        try {
-            const response = await fetch('../Controlador/listar-productos.php');
-            const productos = await response.json();
-
-            // Calcular estadísticas
-            const totalProductos = productos.length;
-            const valorTotal = productos.reduce((sum, p) => sum + (parseFloat(p.Precio) * parseInt(p.cantidad)), 0);
-            const stockBajo = productos.filter(p => parseInt(p.cantidad) <= parseInt(p.valordeStock)).length;
-
-            // Obtener categorías únicas
-            const categorias = [...new Set(productos.map(p => p.nombreTipo))].length;
-
-            // Actualizar UI
-            document.getElementById('total-productos').textContent = totalProductos;
-            document.getElementById('valor-total').textContent = '$' + valorTotal.toLocaleString();
-            document.getElementById('stock-bajo').textContent = stockBajo;
-            document.getElementById('total-categorias').textContent = categorias;
-
-        } catch (error) {
-            console.error('Error al cargar estadísticas:', error);
-        }
-    }
-
     // Función para alternar la barra lateral
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -289,8 +268,10 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
         }
     }
 
-    // Cargar estadísticas al cargar la página
-    document.addEventListener('DOMContentLoaded', cargarEstadisticas);
+    // Inicializar al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+        inicializarEstadisticas();
+    });
     </script>
 </body>
 

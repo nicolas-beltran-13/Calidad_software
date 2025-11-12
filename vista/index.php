@@ -10,7 +10,7 @@ session_start();
     <title>DondePepito - Tu tienda de confianza</title>
 
     <!-- Estilos y scripts -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" ></script>
     <link rel="stylesheet" href="css/styles.css">
     <script>
         tailwind.config = {

@@ -91,7 +91,7 @@ $id_producto = $_GET['id'];
     </div>
 
     <!-- Overlay para móvil -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" onclick="toggleSidebar()"></div>
+    <div id="sidebar-overlay" role="button"  ="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" onclick="toggleSidebar()"></div>
 
     <!-- Contenido principal -->
     <div class="md:ml-64 p-4 md:p-8">
@@ -249,10 +249,11 @@ $id_producto = $_GET['id'];
                                 <img id="preview-img" src="" alt="Vista previa" class="w-full h-32 object-cover rounded-lg border">
                             </div>
                             <div id="imagen-actual" class="mt-4">
-                                <label class="block text-gray-700 font-medium mb-2">
+                                <p class="block text-gray-700 font-medium mb-2">
                                     Imagen Actual
-                                </label>
-                                <img id="imagen-preview-actual" src="" alt="Imagen actual" class="w-32 h-32 object-cover border rounded-lg">
+                                </p>
+                               <img id="imagen-preview-actual" src="" alt="" class="w-32 h-32 object-cover border rounded-lg">
+
                                 <p class="text-sm text-gray-500 mt-1">Deja vacío para mantener la imagen actual</p>
                             </div>
                         </div>

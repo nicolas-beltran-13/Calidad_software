@@ -84,7 +84,11 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     </div>
 
     <!-- Overlay para móvil -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" onclick="toggleSidebar()"></div>
+<div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"
+     role="button" tabindex="0" aria-label="Cerrar barra lateral" 
+     onclick="toggleSidebar()" 
+     onKeyDown="if(event.key === 'Enter' || event.key === ' ') { toggleSidebar(); }">
+</div>
 
     <!-- Contenido principal -->
     <div class="md:ml-64 p-4 md:p-8">

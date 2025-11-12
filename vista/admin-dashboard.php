@@ -1,10 +1,6 @@
 <?php
-session_start();
-// Verificar si el usuario es administrador
-if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolower(trim($_SESSION['usuario_rol'] ?? '')) !== 'admin')) {
-    header('Location: login.php');
-    exit();
-}
+// Incluye verificación de sesión y rol admin
+include_once '../Controlador/verificar_admin.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,28 +9,30 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - DondePepito</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+     <script src="https://cdn.tailwindcss.com" ></script>
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    primary: '#8B1F1F', // Color principal (guinda)
-                    secondary: '#5C1414', // Color secundario (guinda oscuro)
-                    accent: '#D4AF37', // Color acento (dorado)
-                    background: '#F9F9F9', // Fondo claro
-                    surface: '#FFFFFF', // Superficie
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B1F1F',
+                        secondary: '#5C1414',
+                        accent: '#D4AF37',
+                        background: '#F9F9F9',
+                        surface: '#FFFFFF',
+                    }
                 }
             }
         }
-    }
     </script>
 </head>
 
 <body class="bg-background">
     <!-- Barra lateral -->
-    <div id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-primary text-white shadow-lg transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+    <div id="sidebar"
+        class="fixed left-0 top-0 h-screen w-64 bg-primary text-white shadow-lg transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
         <div class="p-6 border-b border-secondary">
             <div class="flex items-center space-x-3">
                 <i class="fas fa-store text-2xl"></i>
@@ -44,7 +42,8 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
         <nav class="p-4">
             <ul class="space-y-2">
                 <li>
-                    <a href="dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary transition-colors">
+                    <a href="dashboard.php"
+                        class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary transition-colors">
                         <i class="fas fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
@@ -74,7 +73,8 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
                     </a>
                 </li>
                 <li>
-                    <a href="../Controlador/logout.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary transition-colors">
+                    <a href="../Controlador/logout.php"
+                        class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary transition-colors">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Cerrar Sesión</span>
                     </a>
@@ -84,10 +84,17 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     </div>
 
     <!-- Overlay para móvil -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" onclick="toggleSidebar()"></div>
+    <!-- Overlay para móvil -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"
+     role="button" tabindex="0" aria-label="Cerrar barra lateral" 
+     onclick="toggleSidebar()" 
+     onKeyDown="if(event.key === 'Enter' || event.key === ' ') { toggleSidebar(); }">
+</div>
+
 
     <!-- Modal de confirmación de eliminación -->
-    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div id="delete-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
             <div class="flex items-center mb-4">
                 <div class="flex-shrink-0">
@@ -103,10 +110,12 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
                 </p>
             </div>
             <div class="flex justify-end space-x-3">
-                <button id="cancel-delete" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                <button id="cancel-delete"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
                     Cancelar
                 </button>
-                <button id="confirm-delete" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                <button id="confirm-delete"
+                    class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
                     Eliminar
                 </button>
             </div>
@@ -116,9 +125,12 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
     <!-- Contenido principal -->
     <div class="md:ml-64 p-4 md:p-8">
         <!-- Header -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
+        <div
+            class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
             <div class="flex items-center space-x-4">
-                <button id="menu-btn" class="md:hidden bg-primary text-white p-2 rounded-lg hover:bg-secondary transition-colors" onclick="toggleSidebar()">
+                <button id="menu-btn"
+                    class="md:hidden bg-primary text-white p-2 rounded-lg hover:bg-secondary transition-colors"
+                    onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
                 <h1 class="text-xl md:text-2xl font-bold text-gray-800">Gestión de Productos</h1>
@@ -127,14 +139,16 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
 
         <!-- Mensajes de éxito/error -->
         <?php if (isset($_SESSION['mensaje'])): ?>
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+            <div
+                class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
                 <?php echo htmlspecialchars($_SESSION['mensaje']); ?>
             </div>
             <?php unset($_SESSION['mensaje']); ?>
         <?php endif; ?>
 
         <?php if (isset($_SESSION['error'])): ?>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <div
+                class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
                 <?php echo htmlspecialchars($_SESSION['error']); ?>
             </div>
             <?php unset($_SESSION['error']); ?>
@@ -186,14 +200,11 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                                 <option value="">Seleccione un tipo</option>
                                 <?php
-                                require_once '../modelo/conexion.php';
-                                $db = new Conexion();
-                                $conn = $db->getConexion();
-                                $query = "SELECT id_tipo_producto, nombreTipo FROM tipo_producto";
-                                $result = $conn->query($query);
-                                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<option value='" . $row['id_tipo_producto'] . "'>" . htmlspecialchars($row['nombreTipo']) . "</option>";
-                                }
+                                    require_once '../modelo/tipoProductoModelo.php';
+                                    $tipos = obtenerTiposProducto();
+                                    while($row = $tipos->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<option value="'. htmlspecialchars($row['id_tipo_producto']) .'">'. htmlspecialchars($row['nombreTipo']) .'</option>';
+                                    }
                                 ?>
                             </select>
                         </div>
@@ -259,7 +270,8 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
                             <label class="block text-gray-700 font-medium mb-2" for="foto">
                                 <i class="fas fa-camera text-primary mr-1"></i>Imagen del Producto *
                             </label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
+                            <div
+                                class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
                                 <input type="file" id="foto" name="foto" accept="image/*" required
                                     class="hidden" onchange="previewImage(this)">
                                 <label for="foto" class="cursor-pointer">
@@ -269,14 +281,16 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
                                 </label>
                             </div>
                             <div id="image-preview" class="mt-4 hidden">
-                                <img id="preview-img" src="" alt="Vista previa" class="w-full h-32 object-cover rounded-lg border">
+                                <img id="preview-img" src="" alt="Vista previa"
+                                    class="w-full h-32 object-cover rounded-lg border">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Botones de acción -->
-                <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200">
+                <div
+                    class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200">
                     <button type="reset"
                         class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all font-medium">
                         <i class="fas fa-eraser mr-2"></i>Limpiar Formulario
@@ -290,154 +304,7 @@ if (!isset($_SESSION['usuario_id']) || (empty($_SESSION['is_admin']) && strtolow
         </div>
     </div>
 
-    <script>
-    // Función para cargar productos
-    async function cargarProductos() {
-        try {
-            const response = await fetch('../Controlador/listar-productos.php');
-            const productos = await response.json();
-            mostrarProductos(productos);
-        } catch (error) {
-            console.error('Error al cargar productos:', error);
-        }
-    }
+    <script src="js/productos.js"></script>
 
-    // Función para mostrar productos
-    function mostrarProductos(productos) {
-        const contenedor = document.getElementById('productos-lista');
-        contenedor.innerHTML = '';
-
-        if (productos.length === 0) {
-            contenedor.innerHTML = '<p class="text-gray-500 text-center col-span-full">No hay productos registrados.</p>';
-            return;
-        }
-
-        productos.forEach(producto => {
-            const productoDiv = document.createElement('div');
-            productoDiv.className = 'bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow';
-
-            const imagenSrc = producto.foto ? `data:image/jpeg;base64,${producto.foto}` : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
-
-            productoDiv.innerHTML = `
-                <div class="relative">
-                    <img src="${imagenSrc}" alt="${producto.nombreProducto}" class="w-full h-48 object-cover">
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-lg text-gray-800 mb-2">${producto.nombreProducto}</h3>
-                    <p class="text-sm text-gray-600 mb-2">${producto.Descripcion}</p>
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-primary font-semibold">$${producto.Precio.toLocaleString()}</span>
-                        <span class="text-sm text-gray-500">${producto.nombreTipo}</span>
-                    </div>
-                    <div class="text-sm text-gray-600 mb-4">
-                        <p>Stock: ${producto.cantidad}</p>
-                        <p>Stock Mínimo: ${producto.valordeStock}</p>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="flex-1 bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm" onclick="editarProducto(${producto.id_producto})">
-                            <i class="fas fa-edit"></i> Editar
-                        </button>
-                        <button class="flex-1 bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm" onclick="eliminarProducto(${producto.id_producto})">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            contenedor.appendChild(productoDiv);
-        });
-    }
-
-    // Función para editar producto
-    function editarProducto(id) {
-        // Obtener datos del producto (necesitaríamos una función para obtener un producto específico)
-        // Por simplicidad, abriremos un modal o redirigiremos a una página de edición
-        window.location.href = `editar-producto.php?id=${id}`;
-    }
-
-    // Variable global para almacenar el ID del producto a eliminar
-    let productoAEliminar = null;
-
-    // Función para eliminar producto
-    function eliminarProducto(id) {
-        productoAEliminar = id;
-        const modal = document.getElementById('delete-modal');
-        const message = document.getElementById('delete-message');
-        message.textContent = '¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.';
-        modal.classList.remove('hidden');
-    }
-
-    // Función para confirmar eliminación
-    function confirmarEliminacion() {
-        if (productoAEliminar) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '../Controlador/eliminar-producto.php';
-
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'id_producto';
-            input.value = productoAEliminar;
-
-            form.appendChild(input);
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-    // Función para cancelar eliminación
-    function cancelarEliminacion() {
-        const modal = document.getElementById('delete-modal');
-        modal.classList.add('hidden');
-        productoAEliminar = null;
-    }
-
-    // Función para mostrar preview de imagen
-    function previewImage(input) {
-        const file = input.files[0];
-        const preview = document.getElementById('image-preview');
-        const previewImg = document.getElementById('preview-img');
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImg.src = e.target.result;
-                preview.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        } else {
-            preview.classList.add('hidden');
-        }
-    }
-
-    // Función para alternar la barra lateral
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-
-        if (sidebar.classList.contains('-translate-x-full')) {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
-        } else {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        }
-    }
-
-    // Event listeners para el modal
-    document.getElementById('cancel-delete').addEventListener('click', cancelarEliminacion);
-    document.getElementById('confirm-delete').addEventListener('click', confirmarEliminacion);
-
-    // Cerrar modal al hacer clic fuera
-    document.getElementById('delete-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            cancelarEliminacion();
-        }
-    });
-
-    // Cargar productos al cargar la página
-    document.addEventListener('DOMContentLoaded', cargarProductos);
-    </script>
 </body>
-
 </html>
