@@ -180,9 +180,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Cart wiring: support buttons with class .add-to-cart and legacy .add-to-cart-btn
     document.querySelectorAll('.add-to-cart, .add-to-cart-btn').forEach(btn => btn.addEventListener('click', function() {
-        const id = this.dataset.id || this.getAttribute('data-id');
-        const name = this.dataset.name || this.getAttribute('data-name') || 'Producto';
-        const price = this.dataset.price || this.getAttribute('data-price') || 0;
+        const id = this.dataset.id;
+        const name = this.dataset.name || 'Producto';
+        const price = this.dataset.price || 0;
         addToCart(id, name, Number(price));
         // optional small feedback
         if (this.classList) this.classList.add('added');
@@ -211,4 +211,3 @@ document.addEventListener('DOMContentLoaded', function() {
     // initialize
     updateCartCount();
 });
-

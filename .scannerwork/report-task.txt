@@ -2,5 +2,5 @@ projectKey=salsamentaria
 serverUrl=http://localhost:9000
 serverVersion=25.10.0.114319
 dashboardUrl=http://localhost:9000/dashboard?id=salsamentaria
-ceTaskId=f3f8d43e-ce69-4763-ab75-49ed828c5c62
-ceTaskUrl=http://localhost:9000/api/ce/task?id=f3f8d43e-ce69-4763-ab75-49ed828c5c62
+ceTaskId=f81b9c48-5dc9-4026-b85d-2b861778a86a
+ceTaskUrl=http://localhost:9000/api/ce/task?id=f81b9c48-5dc9-4026-b85d-2b861778a86a

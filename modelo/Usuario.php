@@ -29,9 +29,9 @@ class Usuario {
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    error_log('[Usuario::login] fetched row: ' . var_export($row, true));
+        error_log('[Usuario::login] fetched row: ' . var_export($row, true));
 
-        if($row) {
+        if ($row) {
             $this->id = $row['id'];
             $this->nombre = $row['nombre'];
             $this->rol = $row['rol'];
@@ -43,17 +43,30 @@ class Usuario {
 
     public function registrar($nombre, $NumeroIdentificacion, $direccion, $telefono, $rol, $gmail, $contrasena) {
         try {
-            $query = "INSERT INTO " . $this->table_name . " (nombre, NumeroIdentificacion, direccion, telefono, rol, gmail, contraseña) VALUES (:nombre, :NumeroIdentificacion, :direccion, :telefono, :rol, :gmail, :contrasena)";
+            $query = "INSERT INTO " . $this->table_name . " (nombre, NumeroIdentificacion, direccion, telefono, rol, gmail, contraseña) 
+                      VALUES (:nombre, :NumeroIdentificacion, :direccion, :telefono, :rol, :gmail, :contrasena)";
 
             $stmt = $this->conn->prepare($query);
 
             // Validar longitudes máximas según la estructura de la tabla
-            if (strlen($nombre) > 30) throw new PDOException("El nombre excede los 30 caracteres permitidos");
-            if (strlen($direccion) > 50) throw new PDOException("La dirección excede los 50 caracteres permitidos");
-            if (strlen($telefono) > 11) throw new PDOException("El teléfono excede los 11 caracteres permitidos");
-            if (strlen($rol) > 10) throw new PDOException("El rol excede los 10 caracteres permitidos");
-            if (strlen($gmail) > 50) throw new PDOException("El email excede los 50 caracteres permitidos");
-            if (strlen($contrasena) > 20) throw new PDOException("La contraseña excede los 20 caracteres permitidos");
+            if (strlen($nombre) > 30) {
+                throw new PDOException("El nombre excede los 30 caracteres permitidos");
+            }
+            if (strlen($direccion) > 50) {
+                throw new PDOException("La dirección excede los 50 caracteres permitidos");
+            }
+            if (strlen($telefono) > 11) {
+                throw new PDOException("El teléfono excede los 11 caracteres permitidos");
+            }
+            if (strlen($rol) > 10) {
+                throw new PDOException("El rol excede los 10 caracteres permitidos");
+            }
+            if (strlen($gmail) > 50) {
+                throw new PDOException("El email excede los 50 caracteres permitidos");
+            }
+            if (strlen($contrasena) > 20) {
+                throw new PDOException("La contraseña excede los 20 caracteres permitidos");
+            }
 
             $stmt->bindParam(":nombre", $nombre);
             $stmt->bindParam(":NumeroIdentificacion", $NumeroIdentificacion);
@@ -63,7 +76,7 @@ class Usuario {
             $stmt->bindParam(":gmail", $gmail);
             $stmt->bindParam(":contrasena", $contrasena);
 
-            if($stmt->execute()) {
+            if ($stmt->execute()) {
                 return true;
             }
 
