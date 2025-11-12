@@ -91,7 +91,7 @@ $id_producto = $_GET['id'];
     </div>
 
     <!-- Overlay para móvil -->
-    <div id="sidebar-overlay" role="button"  ="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" onclick="toggleSidebar()"></div>
+   <div id="sidebar-overlay" role="button" tabindex="0" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40" onclick="toggleSidebar()" onkeydown="handleKeydown(event)"></div>
 
     <!-- Contenido principal -->
     <div class="md:ml-64 p-4 md:p-8">

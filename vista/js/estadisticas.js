@@ -35,14 +35,14 @@ async function cargarEstadisticas() {
 function calcularEstadisticas(productos) {
     const totalProductos = productos.length;
     const valorTotal = productos.reduce((sum, p) => {
-        const precio = parseFloat(p.Precio) || 0;
-        const cantidad = parseInt(p.cantidad) || 0;
+        const precio = Number.parseFloat(p.Precio) || 0;
+        const cantidad = Number.parseInt(p.cantidad) || 0;
         return sum + (precio * cantidad);
     }, 0);
 
     const stockBajo = productos.filter(p => {
-        const cantidad = parseInt(p.cantidad) || 0;
-        const minimo = parseInt(p.valordeStock) || 0;
+        const cantidad = Number.parseInt(p.cantidad) || 0;
+        const minimo = Number.parseInt(p.valordeStock) || 0;
         return cantidad <= minimo;
     }).length;
 
@@ -54,7 +54,7 @@ function calcularEstadisticas(productos) {
         valorTotal,
         stockBajo,
         categorias,
-        productosDisponibles: productos.filter(p => parseInt(p.cantidad) > 0).length
+        productosDisponibles: productos.filter(p => Number.parseInt(p.cantidad) > 0).length
     };
 }
 
